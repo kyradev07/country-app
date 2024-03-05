@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CountryService } from "../../services/country.service";
-import { catchError, Observable, of } from "rxjs";
+import { Observable } from "rxjs";
 import { Country } from "../../interfaces/country";
 
 @Component({
@@ -9,12 +9,12 @@ import { Country } from "../../interfaces/country";
 })
 export class ByCapitalPageComponent {
 
-  country$: Observable<Country[]> = new Observable<Country[]>();
+  capitals$!: Observable<Country[]>;
 
   constructor(private countryService: CountryService) {
   }
 
   searchByCapital(capital: string): void {
-    this.country$ = this.countryService.searchByCapital(capital);
+    this.capitals$ = this.countryService.searchByCapital(capital);
   }
 }

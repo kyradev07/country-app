@@ -8,11 +8,26 @@ import { catchError, Observable, of } from "rxjs";
 })
 export class CountryService {
 
-  private url: string = 'https://restcountries.com/v3.1';
+  private URL: string = 'https://restcountries.com/v3.1';
+  private byCapital: string = `${this.URL}/capital/`;
+  private byCountry: string = `${this.URL}/name/`;
+  private byContinent: string = `${this.URL}/region/`;
 
   constructor(private http: HttpClient) { }
 
   searchByCapital(capital: string): Observable<Country[]> {
-    return this.http.get<Country[]>(`${this.url}/capital/${capital}`);
+    return this.doRequest(`${this.byCapital}${capital}`);
+  }
+
+  searchByCountry(country: string): Observable<Country[]> {
+    return this.doRequest(`${this.byCountry}${country}`);
+  }
+
+  searchByContinent(continent: string): Observable<Country[]> {
+    return this.doRequest(`${this.byContinent}${continent}`);
+  }
+
+  private doRequest(url: string): Observable<Country[]> {
+    return this.http.get<Country[]>(url);
   }
 }

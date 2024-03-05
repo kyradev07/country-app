@@ -1,1 +1,15 @@
-<p>by-region-page works!</p>
+<h2>By Continent</h2>
+<hr>
+
+<div class="row">
+  <div class="col">
+    <shared-search-box (onSearchTerm)="searchByContinent($event)" placeholder="Search by continent"></shared-search-box>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <hr>
+    <countries-country-table [countries$]="continent$"></countries-country-table>
+  </div>
+</div>

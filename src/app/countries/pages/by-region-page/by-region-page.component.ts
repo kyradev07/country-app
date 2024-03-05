@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Observable } from "rxjs";
+import { Country } from "../../interfaces/country";
+import { CountryService } from "../../services/country.service";
 
 @Component({
   selector: 'countries-by-region-page',
@@ -6,5 +9,13 @@ import { Component } from '@angular/core';
   styles: ``
 })
 export class ByRegionPageComponent {
+  continent$!: Observable<Country[]>;
+
+  constructor(private countryService: CountryService) {
+  }
+
+  searchByContinent(continent: string): void {
+    this.continent$ = this.countryService.searchByContinent(continent);
+  }
 
 }
