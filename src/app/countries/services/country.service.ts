@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Country } from "../interfaces/country";
-import { catchError, Observable, of } from "rxjs";
+import { catchError, filter, map, Observable, of } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,7 @@ export class CountryService {
   private byCapital: string = `${this.URL}/capital/`;
   private byCountry: string = `${this.URL}/name/`;
   private byContinent: string = `${this.URL}/region/`;
+  private byCode: string = `${this.URL}/alpha/`;
 
   constructor(private http: HttpClient) { }
 
@@ -27,7 +28,15 @@ export class CountryService {
     return this.doRequest(`${this.byContinent}${continent}`);
   }
 
+  searchByCode(code: string): Observable<Country> {
+    return this.doRequest(`${this.byCode}${code}`).pipe(
+      catchError(() => of([])),
+      map((countries: Country[]) => countries[0])
+    );
+  }
+
   private doRequest(url: string): Observable<Country[]> {
+    console.log(url);
     return this.http.get<Country[]>(url);
   }
 }
