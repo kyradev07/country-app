@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CountryService } from "../../services/country.service";
-import { Observable } from "rxjs";
+import { catchError, delay, Observable, tap } from "rxjs";
 import { Country } from "../../interfaces/country";
 
 @Component({
@@ -10,11 +10,16 @@ import { Country } from "../../interfaces/country";
 export class ByCapitalPageComponent {
 
   capitals$!: Observable<Country[]>;
+  isLoading: boolean = false;
 
   constructor(private countryService: CountryService) {
   }
 
   searchByCapital(capital: string): void {
-    this.capitals$ = this.countryService.searchByCapital(capital);
+    this.isLoading = true;
+    this.capitals$ = this.countryService.searchByCapital(capital)
+    .pipe(
+      tap(() => this.isLoading = false)
+    );
   }
 }

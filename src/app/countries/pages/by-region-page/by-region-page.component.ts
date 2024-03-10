@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from "rxjs";
+import { Observable, tap } from "rxjs";
 import { Country } from "../../interfaces/country";
 import { CountryService } from "../../services/country.service";
 
@@ -10,12 +10,17 @@ import { CountryService } from "../../services/country.service";
 })
 export class ByRegionPageComponent {
   continent$!: Observable<Country[]>;
+  isLoading: boolean = false;
 
   constructor(private countryService: CountryService) {
   }
 
   searchByContinent(continent: string): void {
-    this.continent$ = this.countryService.searchByContinent(continent);
+    this.isLoading = true;
+    this.continent$ = this.countryService.searchByContinent(continent)
+    .pipe(
+      tap(() => this.isLoading = false)
+    );
   }
 
 }

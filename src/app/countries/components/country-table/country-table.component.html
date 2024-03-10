@@ -1,30 +1,32 @@
 <ng-container *ngIf="(countries$ | async) as countries; else empty">
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Flag</th>
-        <th>Official Name</th>
-        <th>Capital</th>
-        <th>Population</th>
-        <th>Link</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let country of countries; index as i">
-        <td>{{i + 1}}</td>
-        <td>
-          <img [src]="country.flags.svg" [alt]="country.name.common" width="30" height="20">
-        </td>
-        <td>{{country.name.official}}</td>
-        <td>{{country.capital}}</td>
-        <td>{{country.population | number}}</td>
-        <td>
-          <a [routerLink]="['/countries/by', country.cca3]">Info</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <ng-container *ngIf="countries.length > 0; else empty">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Flag</th>
+          <th>Official Name</th>
+          <th>Capital</th>
+          <th>Population</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let country of countries; index as i">
+          <td>{{i + 1}}</td>
+          <td>
+            <img [src]="country.flags.svg" [alt]="country.name.common" width="30" height="20">
+          </td>
+          <td>{{country.name.official}}</td>
+          <td>{{country.capital}}</td>
+          <td>{{country.population | number}}</td>
+          <td>
+            <a [routerLink]="['/countries/by', country.cca3]">Info</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
 </ng-container>
 
 <ng-template #empty>

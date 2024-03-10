@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { CountryService } from "../../services/country.service";
-import { catchError, filter, of, switchMap, tap } from "rxjs";
+import { Observable, switchMap } from "rxjs";
 import { Country } from "../../interfaces/country";
 
 @Component({
@@ -12,6 +12,7 @@ import { Country } from "../../interfaces/country";
 export class CountryPageComponent implements OnInit {
 
   country?: Country;
+  country$: Observable<Country | boolean> = new Observable<Country | boolean>();
 
   constructor(private activatedRoute: ActivatedRoute, private countryService: CountryService, private router: Router) {
   }
@@ -26,7 +27,6 @@ export class CountryPageComponent implements OnInit {
         return;
       }
       this.country = { ...country };
-      console.log(this.country);
     });
   }
 }

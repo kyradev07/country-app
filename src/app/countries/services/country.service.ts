@@ -30,13 +30,14 @@ export class CountryService {
 
   searchByCode(code: string): Observable<Country> {
     return this.doRequest(`${this.byCode}${code}`).pipe(
-      catchError(() => of([])),
-      map((countries: Country[]) => countries[0])
+      map((countries: Country[]) => countries[0]),
     );
   }
 
   private doRequest(url: string): Observable<Country[]> {
-    console.log(url);
-    return this.http.get<Country[]>(url);
+    return this.http.get<Country[]>(url)
+      .pipe(
+        catchError(() => of([]))
+    );
   }
 }
