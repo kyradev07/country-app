@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { delay, Observable, tap } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { Observable, tap } from "rxjs";
 import { Country } from "../../interfaces/country";
 import { CountryService } from "../../services/country.service";
 
@@ -7,11 +7,17 @@ import { CountryService } from "../../services/country.service";
   selector: 'countries-by-country-page',
   templateUrl: './by-country-page.component.html'
 })
-export class ByCountryPageComponent {
+export class ByCountryPageComponent implements OnInit {
   countries$!: Observable<Country[]>;
   isLoading: boolean = false;
+  initialValue: string = '';
 
   constructor(private countryService: CountryService) {
+  }
+
+  ngOnInit(): void {
+    this.countries$ = this.countryService.cacheStorage.byCountry.countries;
+    this.initialValue = this.countryService.cacheStorage.byCountry.term;
   }
 
   searchByCountry(country: string): void {

@@ -7,6 +7,7 @@ import { debounceTime, filter, map, Subject } from "rxjs";
 })
 export class SearchBoxComponent implements OnInit, OnDestroy {
   @Input() placeholder: string = '';
+  @Input() initialValue!: string
   @Output() onSearchTerm: EventEmitter<string> = new EventEmitter<string>();
 
   private debounce$: Subject<string> = new Subject<string>();

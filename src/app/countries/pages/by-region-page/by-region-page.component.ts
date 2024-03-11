@@ -1,27 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable, tap } from "rxjs";
 import { Country } from "../../interfaces/country";
 import { CountryService } from "../../services/country.service";
-import { KeyValue } from "@angular/common";
-
-enum Region {
-  Africa = 'Africa',
-  Americas = 'Americas',
-  Europe = 'Europe',
-  Asia = 'Asia',
-  Oceania = 'Oceania'
-}
+import { Region } from "../../interfaces/region";
 
 @Component({
   selector: 'countries-by-region-page',
   templateUrl: './by-region-page.component.html'
 })
-export class ByRegionPageComponent {
+export class ByRegionPageComponent implements OnInit {
   continent$!: Observable<Country[]>;
   isLoading: boolean = false;
-  selectedRegion?: string;
+  selectedRegion: string | undefined = '';
+  regions = Region;
 
   constructor(private countryService: CountryService) {
+  }
+
+  ngOnInit(): void {
+    this.continent$ = this.countryService.cacheStorage.byContinent.countries;
+    this.selectedRegion = this.countryService.cacheStorage.byContinent.region;
   }
 
   searchByContinent(continent: string): void {
@@ -32,6 +30,4 @@ export class ByRegionPageComponent {
       tap(() => this.isLoading = false)
     );
   }
-
-  protected readonly Region = Region;
 }

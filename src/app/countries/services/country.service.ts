@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Country } from "../interfaces/country";
-import { catchError, filter, map, Observable, of } from "rxjs";
+import { catchError, map, Observable, of, tap } from "rxjs";
+import { Storage } from "../interfaces/storage";
+import { Region } from "../interfaces/region";
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +16,33 @@ export class CountryService {
   private byContinent: string = `${this.URL}/region/`;
   private byCode: string = `${this.URL}/alpha/`;
 
+  cacheStorage: Storage = {
+    byCapital: { term: '', countries: of([]) },
+    byCountry: { term: '', countries: of([]) },
+    byContinent: { countries: of([]) }
+  }
+
   constructor(private http: HttpClient) { }
 
-  searchByCapital(capital: string): Observable<Country[]> {
-    return this.doRequest(`${this.byCapital}${capital}`);
+  searchByCapital(term: string): Observable<Country[]> {
+    return this.doRequest(`${this.byCapital}${term}`)
+    .pipe(
+      tap((countries: Country[]) => this.cacheStorage.byCapital = { term, countries: of(countries) })
+    );
   }
 
-  searchByCountry(country: string): Observable<Country[]> {
-    return this.doRequest(`${this.byCountry}${country}`);
+  searchByCountry(term: string): Observable<Country[]> {
+    return this.doRequest(`${this.byCountry}${term}`)
+    .pipe(
+      tap((countries: Country[]) => this.cacheStorage.byCountry = { term, countries: of(countries) })
+    );
   }
 
-  searchByContinent(continent: string): Observable<Country[]> {
-    return this.doRequest(`${this.byContinent}${continent}`);
+  searchByContinent(region: string): Observable<Country[]> {
+    return this.doRequest(`${this.byContinent}${region}`)
+    .pipe(
+      tap((countries: Country[]) => this.cacheStorage.byContinent = { region: Region[region as keyof typeof Region], countries: of(countries) })
+    );
   }
 
   searchByCode(code: string): Observable<Country> {
