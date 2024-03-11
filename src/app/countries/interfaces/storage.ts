@@ -10,10 +10,10 @@ export interface Storage {
 
 export interface TermCountries {
   term: string,
-  countries: Observable<Country[]>
+  countries: Country[]
 }
 
 export interface RegionCountries {
   region?: Region,
-  countries: Observable<Country[]>
+  countries: Country[]
 }

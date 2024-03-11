@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CountryService } from "../../services/country.service";
-import { Observable, tap } from "rxjs";
+import { Observable, of, tap } from "rxjs";
 import { Country } from "../../interfaces/country";
 
 @Component({
@@ -17,7 +17,7 @@ export class ByCapitalPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.capitals$ = this.countryService.cacheStorage.byCapital.countries;
+    this.capitals$ = of(this.countryService.cacheStorage.byCapital.countries);
     this.initialValue = this.countryService.cacheStorage.byCapital.term;
   }
 
